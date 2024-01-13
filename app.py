@@ -2,6 +2,9 @@ import pygame
 import time
 import math
 from imgResizing import scale_image, blit_rotate_center, blit_text_center
+
+
+
 pygame.font.init()
 
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
@@ -23,7 +26,6 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Racing a dRunK DRiveR")
 
 MAIN_FONT = pygame.font.SysFont("impactbold", 44)
-
 
 
 FPS = 60
@@ -225,19 +227,19 @@ def draw(win, images, player_car, player2_car, computer_car, game_info):
     win.blit(level_text_stroke, (10 - 1, HEIGHT - level_text_stroke.get_height() - 100 - 3))  # Offset for stroke effect
 
     vel_text = MAIN_FONT.render(
-    f"Vel: {round(player_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
+    f"Speed: {round(player_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
     win.blit(vel_text, (10, HEIGHT - vel_text.get_height() - 40))
 
     vel_text_stroke = MAIN_FONT.render(
-    f"Vel: {round(player_car.vel*25.4)}Km/h", 1, (255, 55, 0))  # Desired color
+    f"Speed: {round(player_car.vel*25.4)}Km/h", 1, (255, 55, 0))  # Desired color
     win.blit(vel_text_stroke, (10 - 1, HEIGHT - vel_text_stroke.get_height() - 40 - 3))  # Offset for stroke effect
 
     vel_text = MAIN_FONT.render(
-    f"Vel: {round(player2_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
+    f"Speed: {round(player2_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
     win.blit(vel_text, (10, HEIGHT - vel_text.get_height() - 10))
 
     vel_text_stroke = MAIN_FONT.render(
-    f"Vel: {round(player2_car.vel*25.4)}Km/h", 1, (200, 200, 200))  # Desired color
+    f"Speed: {round(player2_car.vel*25.4)}Km/h", 1, (200, 200, 200))  # Desired color
     win.blit(vel_text_stroke, (10 - 1, HEIGHT - vel_text_stroke.get_height() - 10 - 3))  # Offset for stroke effect
 
     time_text = MAIN_FONT.render(
