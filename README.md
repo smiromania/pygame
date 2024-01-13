@@ -49,4 +49,5 @@ References:
                                         https://www.youtube.com/watch?v=1_H7InPMjaY
       11. Creating a game in Python: https://www.youtube.com/watch?v=waY3LfJhQLY
       12. Map inspiration: https://www.pygame.org/project/948
+      13. Image manipulation in Pygame: https://www.geeksforgeeks.org/how-to-rotate-and-scale-images-using-pygame/
       
