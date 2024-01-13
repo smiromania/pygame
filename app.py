@@ -1,7 +1,7 @@
 import pygame
 import time
 import math
-from newModules import scale_image, blit_rotate_center, blit_text_center
+from imgResizing import scale_image, blit_rotate_center, blit_text_center
 pygame.font.init()
 
 GRASS = scale_image(pygame.image.load("imgs/grass.jpg"), 2.5)
@@ -15,17 +15,40 @@ FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POSITION = (130, 250)
 
 RED_CAR = scale_image(pygame.image.load("imgs/red-car.png"), 0.55)
+WHITE_CAR = scale_image(pygame.image.load("imgs/white-car.png"), 0.55)
 GREEN_CAR = scale_image(pygame.image.load("imgs/green-car.png"), 0.55)
 
 WIDTH, HEIGHT = TRACK.get_width(), TRACK.get_height()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Joculeț cu mașini")
+pygame.display.set_caption("Racing a dRunK DRiveR")
 
-MAIN_FONT = pygame.font.SysFont("Impact Bold", 44)
+MAIN_FONT = pygame.font.SysFont("impactbold", 44)
 
-FPS = 144
-PATH = [(175, 119), (110, 70), (56, 133), (70, 481), (318, 731), (404, 680), (418, 521), (507, 475), (600, 551), (613, 715), (736, 713),
-        (734, 399), (611, 357), (409, 343), (433, 257), (697, 258), (738, 123), (581, 71), (303, 78), (275, 377), (176, 388), (178, 260)]
+
+
+FPS = 60
+PATH = [(184, 159) , 
+(119, 59) , 
+(63, 128) , 
+(60, 549) , 
+(332, 761) , 
+(509, 757) , 
+(463, 634) , 
+(508, 570) , 
+(709, 749) , 
+(749, 91) , 
+(639, 162) , 
+(646, 322) , 
+(450, 107) , 
+(354, 53) , 
+(384, 178) , 
+(590, 467) , 
+(466, 480) , 
+(400, 384) , 
+(358, 548) , 
+(333, 621) , 
+(219, 514) , 
+(173, 164)]
 
 
 class GameInfo:
@@ -116,7 +139,17 @@ class PlayerCar(AbstractCar):
     def bounce(self):
         self.vel = -self.vel
         self.move()
+class Player2Car(AbstractCar):
+    IMG = WHITE_CAR
+    START_POS = (165, 200)
 
+    def reduce_speed(self):
+        self.vel = max(self.vel - self.acceleration / 2, 0)
+        self.move()
+
+    def bounce(self):
+        self.vel = -self.vel
+        self.move()
 
 class ComputerCar(AbstractCar):
     IMG = GREEN_CAR
@@ -179,23 +212,45 @@ class ComputerCar(AbstractCar):
         self.current_point = 0
 
 
-def draw(win, images, player_car, computer_car, game_info):
+def draw(win, images, player_car, player2_car, computer_car, game_info):
     for img, pos in images:
         win.blit(img, pos)
 
     level_text = MAIN_FONT.render(
-        f"Level {game_info.level}", 1, (255, 255, 255))
-    win.blit(level_text, (10, HEIGHT - level_text.get_height() - 70))
+    f"Level {game_info.level}", 1, (0, 0, 0))  # Black color
+    win.blit(level_text, (10, HEIGHT - level_text.get_height() - 100))
 
-    time_text = MAIN_FONT.render(
-        f"Time: {game_info.get_level_time()}s", 1, (255, 255, 255))
-    win.blit(time_text, (10, HEIGHT - time_text.get_height() - 40))
+    level_text_stroke = MAIN_FONT.render(
+    f"Level {game_info.level}", 1, (255, 255, 255))  # Desired color
+    win.blit(level_text_stroke, (10 - 1, HEIGHT - level_text_stroke.get_height() - 100 - 3))  # Offset for stroke effect
 
     vel_text = MAIN_FONT.render(
-        f"Vel: {round(player_car.vel*25.4)}km/h", 1, (255, 255, 255))
+    f"Vel: {round(player_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
+    win.blit(vel_text, (10, HEIGHT - vel_text.get_height() - 40))
+
+    vel_text_stroke = MAIN_FONT.render(
+    f"Vel: {round(player_car.vel*25.4)}Km/h", 1, (255, 55, 0))  # Desired color
+    win.blit(vel_text_stroke, (10 - 1, HEIGHT - vel_text_stroke.get_height() - 40 - 3))  # Offset for stroke effect
+
+    vel_text = MAIN_FONT.render(
+    f"Vel: {round(player2_car.vel*25.4)}Km/h", 1, (0, 0, 0))  # Black color
     win.blit(vel_text, (10, HEIGHT - vel_text.get_height() - 10))
 
+    vel_text_stroke = MAIN_FONT.render(
+    f"Vel: {round(player2_car.vel*25.4)}Km/h", 1, (200, 200, 200))  # Desired color
+    win.blit(vel_text_stroke, (10 - 1, HEIGHT - vel_text_stroke.get_height() - 10 - 3))  # Offset for stroke effect
+
+    time_text = MAIN_FONT.render(
+    f"Time: {game_info.get_level_time()}s", 1, (0, 0, 0))  # Black color
+    win.blit(time_text, (10, HEIGHT - time_text.get_height() - 70))
+
+    time_text_stroke = MAIN_FONT.render(
+    f"Time: {game_info.get_level_time()}s", 1, (255, 255, 255))  # Desired color
+    win.blit(time_text_stroke, (10 - 1, HEIGHT - time_text_stroke.get_height() - 70 - 3))  # Offset for stroke effect
+
+
     player_car.draw(win)
+    player2_car.draw(win)
     computer_car.draw(win)
     pygame.display.update()
 
@@ -212,6 +267,23 @@ def move_player(player_car):
         moved = True
         player_car.move_forward()
     if keys[pygame.K_s]:
+        moved = True
+        player_car.move_backward()
+
+    if not moved:
+        player_car.reduce_speed()
+def move_player2(player_car):
+    keys = pygame.key.get_pressed()
+    moved = False
+
+    if keys[pygame.K_LEFT]:
+        player_car.rotate(left=True)
+    if keys[pygame.K_RIGHT]:
+        player_car.rotate(right=True)
+    if keys[pygame.K_UP]:
+        moved = True
+        player_car.move_forward()
+    if keys[pygame.K_DOWN]:
         moved = True
         player_car.move_backward()
 
@@ -247,15 +319,16 @@ def handle_collision(player_car, computer_car, game_info):
 run = True
 clock = pygame.time.Clock()
 images = [(GRASS, (0, 0)), (TRACK, (0, 0)),
-          (FINISH, FINISH_POSITION), (TRACK_BORDER, (0, 0))]
-player_car = PlayerCar(6, 4)
-computer_car = ComputerCar(4, 4, PATH)
+          (FINISH, FINISH_POSITION)]
+player_car = PlayerCar(6.3, 3.7)
+player2_car = Player2Car(6, 4)
+computer_car = ComputerCar(3, 4, PATH)
 game_info = GameInfo()
 
 while run:
     clock.tick(FPS)
 
-    draw(WIN, images, player_car, computer_car, game_info)
+    draw(WIN, images, player_car, player2_car, computer_car, game_info)
 
     while not game_info.started:
         blit_text_center(
@@ -275,16 +348,20 @@ while run:
             break
 
     move_player(player_car)
-    computer_car.move()
+    move_player2(player2_car)   
+    
 
+    computer_car.move()
+    handle_collision(player2_car, computer_car, game_info)
     handle_collision(player_car, computer_car, game_info)
+    
 
     if game_info.game_finished():
         blit_text_center(WIN, MAIN_FONT, "You won the game!")
         pygame.time.wait(5000)
         game_info.reset()
         player_car.reset()
+        player2_car.reset()
         computer_car.reset()
-
 
 pygame.quit()
