@@ -29,10 +29,11 @@ Running:
       1. Clone the project to your desired location.
       2. Open the project in VSCode
       3. Create a .venv Environment
-      4. install pygame library (https://www.pygame.org/wiki/GettingStarted)
-      5. Run app.py
-      6. Press 'W' or UP to start.
-      7. Enjoy
+      4. Activate the .venv Environment
+      5. install pygame library (https://www.pygame.org/wiki/GettingStarted)
+      6. Run app.py
+      7. Press 'W' or UP to start.
+      8. Enjoy
 
 References:
 
